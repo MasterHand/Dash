@@ -1,0 +1,45 @@
+
+1. intro
+
+	1.1 purpose
+	The main purpose of this system is to separate the proper data and requirements to help segment the two sides of retail and dealerships. This system focus primarily on retail. 
+
+	My personal version of ReconPro for central.
+	This software design document describes the architecture and system design of a growing car detailing business. There are many internal and external factors that affect our profit margin. Data synthesis and analysis is how we discover these factors. This detailing business, or car wash, is in need of a reliable source of data that represents the internal operations of various business components, as well as the direction of certain cash flows. This software project is intended to be used by managerial staff as a way to analyze data points.
+
+	1.2 scope
+	In order to create a larger profit margin the manager needs a visual representation of the company as a whole. The goal of this software system is to help the users visualize the the company's financial flow of data. The software will process records identical to the way that the company already stores its data, but in an arrangement that will allow for more a cost-effective understanding of our organization. 
+
+	1.3 Overview 
+	overview of the document
+
+1.4 reference material
+
+2. System Overview
+
+	The main purpose of this system is to separate the proper data and requirements in order to segment the two modules of our companies organization. This system will focus primarily on the retail module. The system will keep records of many objects including but not limited to: employee records, vehicles records, customers, inventory and supplies, expenses, weather patterns and other records that will be discovered over the next few months. By having multiple database entities we can learn more about our company by aggregating said data represented by graphs and charts.
+		for example, identifying time interval patterns of return customers. If a cutomer is averaging a 3 month-6 month comback period, we should be offering them deals and promotions earlier than their expected return date.
+		
+		For example, it is known that the retail side has low revenue during poor weather conditions. when we get the historical data of past years revenue we should be able to predict certain weeks/months in the year where business will be hurting. This is where a marketing and promotion will come into play and offer sweet deals during these time intervals.
+
+		Another example, it is well know that inventory management is always a problem in terms of availability. With a database we can see when these items were purchased and how quickly they are used. We can also see which types of details on average will use the most supplies.
+
+3. System Architecture
+	
+	3.1 Architectural Design
+
+		The architectural design of the system will be database driven. A database rich in table entries will be created, read, updated and deleted as requested. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

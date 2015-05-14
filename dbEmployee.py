@@ -1,47 +1,104 @@
 #!/usr/bin/python
-import MySQLdb
+import sqlalchemy
+from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 
-#open the database connection
-db = MySQLdb.connect("localhost", "root", "three3", "TESTDB")
+print sqlalchemy.__version__
 
-cursor = db.cursor()
+engine = create_engine('mysql+mysqldb://root:three3@localhost:1337/TESTDB', echo=True)
+Base = declarative_base()
 
-cursor.execute("drop table if exists employee")
+class Employee(Base):
+	__tablename__ = 'employees'
 
-makeTable ="""CREATE TABLE EMPLOYEE (
-				name varchar(20) not null,
-				age int,
-				role varchar(20),
-				salary float,
-				cRate float,
-				total_gross float )"""
+	#Declarative provides a built in __init__() method 
+	id = Column(Integer, primary_key=True)
+	name = Column(String(20), nullable=False)
+	age = Column(Integer)
+	role = Column(String(20))
+	salary = Column(Integer)
+	cRate = Column(Integer)
 
-cursor.execute(makeTable)
+	#returns a String representation of the object for printing
+	def __repr__(self):
+		return "<Employee(name='%s', age='%s', role='%s', salary='%s', cRate='%s')>" % \
+					(self.name, self.age, self.role, self.salary, self.cRate)
 
-name=raw_input ("name:" )
-age=raw_input("age:" )
-role=raw_input("role:" )
-salary=raw_input("salary:" )
-cRate=raw_input("cRate:") 
+	def newEmployee(self):
+		try:
+			session.add(self)
+			session.commit()
 
-newEmp= "insert into employee(name, age, role, salary, cRate)\
-			VALUES ('%s', '%s', '%s', '%s', '%s')" % \
-			(name,age,role,salary,cRate)
+		except e:
+			session.rollback()
+			print e
 
-try:
-	cursor.execute(newEmp)
-	db.commit()
-except:
-	db.rollback()
+	def getEmployee(self):
+		try:
+			for emp in session.query(Employee).order_by(Employee.id):
+				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
+
+		except NoResultsFound, e:
+			print e
 
 
-#showEmp= """select * from employee"""
 
-#cursor.execute(showEmp)
+	#def updateEmployee(self):
 
-cursor.execute("select version()")
 
-data = cursor.fetchone()
+	def delAllEmployee(self):
+		try:
+			for emp in session.query(Employee).order_by(Employee.id):
+				session.delete(emp)
+				session.commit()
 
-print "Db version : is %s" %data
-db.close()
+		except NoResultsFound, e:
+			print e
+
+
+def delOneEmployee(argName):
+	try:
+		for emp in session.query(Employee).filter(Employee.name='%s').first() % argName:
+			session.delete(emp)
+			session.commit()
+
+	except NoResultFound, e:
+		print e
+
+
+def getEmployee():
+		try:
+			for emp in session.query(Employee).order_by(Employee.id):
+				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
+
+		except NoResultsFound, e:
+			print e
+
+
+
+Base.metadata.create_all(engine)
+
+#Session object is the 'handle' to the database.
+Session = sessionmaker(bind=engine)
+session = Session()
+
+#new_emp = Employee(name='AndrewBBBB', age='24', role='Manager', salary='44000', cRate='.30')
+#new_emp2 = Employee(name='Michael', age='21', role='Detailer', salary='0', cRate='30')
+
+
+#new_emp.newEmployee()
+#new_emp2.newEmployee()
+
+getEmployee()
+
+kill=Employee()
+
+kill = session.query(Employee).filter(Employee.name=='Andrew').all()
+print kill
+
+delOneEmployee('Andrew')
+
+
+

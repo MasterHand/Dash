@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
-Base.metadata.create_all(engine)
 
 session = Session()
 
@@ -77,6 +76,8 @@ def getAllEmployees():
 
 		except NoResultsFound, e:
 			print e
+
+Base.metadata.create_all(engine)
 
 
 #new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')

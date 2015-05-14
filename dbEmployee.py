@@ -1,14 +1,15 @@
 #!/usr/bin/python
 import sqlalchemy
-from sqlalchemy import create_engine, Column, Integer, String, Float
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, Float
+from __init__ import Session, engine
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.ext.declarative import declarative_base
 
-print sqlalchemy.__version__
 
-engine = create_engine('mysql+mysqldb://root:three3@localhost:1337/TESTDB', echo=False)
 Base = declarative_base()
+Base.metadata.create_all(engine)
+
+session = Session()
 
 class Employee(Base):
 	__tablename__ = 'employees'
@@ -78,20 +79,9 @@ def getAllEmployees():
 			print e
 
 
-
-Base.metadata.create_all(engine)
-
-#Session object is the 'handle' to the database.
-Session = sessionmaker(bind=engine)
-session = Session()
-
-#new_emp = Employee(name='AndrewBBBB', age='24', role='Manager', salary='44000', cRate='.30')
-#new_emp2 = Employee(name='Michael', age='21', role='Detailer', salary='0', cRate='30')
-
+#new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')
 
 #new_emp.newEmployee()
-#new_emp2.newEmployee()
-
 getEmployee('Michael')
 
 kill=Employee()
@@ -101,7 +91,7 @@ kill = session.query(Employee).filter(Employee.name=='Andrew').all()
 
 getAllEmployees()
 
-delEmployee('Andrew')
+delEmployee('Michael')
 
 
 

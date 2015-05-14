@@ -7,7 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 print sqlalchemy.__version__
 
-engine = create_engine('mysql+mysqldb://root:three3@localhost:1337/TESTDB', echo=True)
+engine = create_engine('mysql+mysqldb://root:three3@localhost:1337/TESTDB', echo=False)
 Base = declarative_base()
 
 class Employee(Base):
@@ -26,6 +26,7 @@ class Employee(Base):
 		return "<Employee(name='%s', age='%s', role='%s', salary='%s', cRate='%s')>" % \
 					(self.name, self.age, self.role, self.salary, self.cRate)
 
+	#creates a new employee
 	def newEmployee(self):
 		try:
 			session.add(self)
@@ -34,19 +35,6 @@ class Employee(Base):
 		except e:
 			session.rollback()
 			print e
-
-	def getEmployee(self):
-		try:
-			for emp in session.query(Employee).order_by(Employee.id):
-				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
-
-		except NoResultsFound, e:
-			print e
-
-
-
-	#def updateEmployee(self):
-
 
 	def delAllEmployee(self):
 		try:
@@ -58,17 +46,30 @@ class Employee(Base):
 			print e
 
 
-def delOneEmployee(argName):
+
+
+#pass in a string, gets first row
+def delEmployee(empName):
 	try:
-			emp = session.query(Employee).filter(Employee.name==argName).first()
-			session.delete(emp)
-			session.commit()
+		emp = session.query(Employee).filter(Employee.name==empName).first()
+		session.delete(emp)
+		session.commit()
 
 	except NoResultFound, e:
 		print e
 
+#pass in a string, gets first row
+def getEmployee(empName):
+	try:
+		emp = session.query(Employee).filter(Employee.name==empName).first()
+		print emp.name, emp.age, emp.role, emp.salary, emp.cRate
 
-def getEmployee():
+	except NoResultsFound, e:
+		print e
+
+
+#lists all employees
+def getAllEmployees():
 		try:
 			for emp in session.query(Employee).order_by(Employee.id):
 				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
@@ -91,14 +92,16 @@ session = Session()
 #new_emp.newEmployee()
 #new_emp2.newEmployee()
 
-getEmployee()
+getEmployee('Michael')
 
 kill=Employee()
 
 kill = session.query(Employee).filter(Employee.name=='Andrew').all()
-print kill
+#print kill
 
-delOneEmployee('Andrew')
+getAllEmployees()
+
+delEmployee('Andrew')
 
 
 

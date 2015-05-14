@@ -15,3 +15,5 @@ install SQLAlchemy (python databseAPI/ORM) 1.0.4
 ```
 sudo pip install SQLAlchemy
 ```
+
+mysql-python

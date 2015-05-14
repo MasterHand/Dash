@@ -60,7 +60,7 @@ class Employee(Base):
 
 def delOneEmployee(argName):
 	try:
-		for emp in session.query(Employee).filter(Employee.name='%s').first() % argName:
+			emp = session.query(Employee).filter(Employee.name==argName).first()
 			session.delete(emp)
 			session.commit()
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, Float
 from __init__ import Session, engine
+from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.ext.declarative import declarative_base
 

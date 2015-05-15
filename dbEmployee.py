@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sqlalchemy
 from __init__ import Session, engine
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, update
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -36,7 +36,7 @@ class Employee(Base):
 			session.rollback()
 			print e
 
-	def delAllEmployee(self):
+	def bulkDelEmployee(self):
 		try:
 			for emp in session.query(Employee).order_by(Employee.id):
 				session.delete(emp)
@@ -44,7 +44,7 @@ class Employee(Base):
 
 		except NoResultsFound, e:
 			print e
-			
+
 #pass in a string, employee name
 def delEmployee(empName):
 	try:
@@ -73,6 +73,21 @@ def getAllEmployees():
 
 		except NoResultFound, e:
 			print e
+
+def updateEmployee(emp_id, name, age, role, salary, cRate):
+	try:
+		session.query(Employee).filter(Employee.id == emp_id).\
+			update({"name": name,
+					"age": age,
+					"role": role,
+					"salary": salary,
+					"cRate": cRate
+					}, synchronize_session='evaluate')
+			session.commit()
+	except NoResultFound, e:
+		print e
+
+
 
 Base.metadata.create_all(engine)
 

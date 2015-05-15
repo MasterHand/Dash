@@ -44,11 +44,8 @@ class Employee(Base):
 
 		except NoResultsFound, e:
 			print e
-
-
-
-
-#pass in a string, gets first row
+			
+#pass in a string, employee name
 def delEmployee(empName):
 	try:
 		emp = session.query(Employee).filter(Employee.name==empName).first()
@@ -58,13 +55,13 @@ def delEmployee(empName):
 	except NoResultFound, e:
 		print e
 
-#pass in a string, gets first row
+#pass in a string, employee name
 def getEmployee(empName):
 	try:
 		emp = session.query(Employee).filter(Employee.name==empName).first()
 		print emp.name, emp.age, emp.role, emp.salary, emp.cRate
 
-	except NoResultsFound, e:
+	except NoResultFound, e:
 		print e
 
 
@@ -74,7 +71,7 @@ def getAllEmployees():
 			for emp in session.query(Employee).order_by(Employee.id):
 				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
 
-		except NoResultsFound, e:
+		except NoResultFound, e:
 			print e
 
 Base.metadata.create_all(engine)

@@ -92,19 +92,20 @@ def updateEmployee(emp_id, name, age, role, salary, cRate):
 Base.metadata.create_all(engine)
 
 
+print "dbEmployee is executed"
 #new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')
 
 #new_emp.newEmployee()
-getEmployee('Michael')
+#getEmployee('Michael')
 
-kill=Employee()
+#kill=Employee()
 
-kill = session.query(Employee).filter(Employee.name=='Andrew').all()
+#kill = session.query(Employee).filter(Employee.name=='Andrew').all()
 #print kill
 
-getAllEmployees()
+#getAllEmployees()
 
-delEmployee('Michael')
+#delEmployee('Michael')
 
 
 

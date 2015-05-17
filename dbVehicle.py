@@ -105,6 +105,8 @@ class Customer(Base):
 	name = Column(String(25), nullable=True)
 	email = Column(String(25), nullable=True)
 
+	automobiles = relationship("Vehicle", backref = "customers")
+
 	def __repr__(self):
 		return "<Customer(name='%s', email='%s')>" % \
 				(self.name, self.email)
@@ -152,11 +154,11 @@ def updateCustomer(cust_id, name, email):
 
 Base.metadata.create_all(engine)
 
-print "this might work"
+print "dbVehicle script is executed"
 
 #updateCar("11111", "11111", "Kawasaki", "Ninja ZX-6R", "2015", "1")
 
-updateCustomer("3", "Big Daddy", "apb@ghotmail.com")
+#updateCustomer("3", "Big Daddy", "apb@ghotmail.com")
 
 #new_cust= Customer(name='Big Berggy', email='FUCK@gmail.com')
 #session.add(new_cust)

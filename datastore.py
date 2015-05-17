@@ -1,14 +1,112 @@
 #!/usr/bin/python
 import sqlalchemy
 from __init__ import Session, engine
-from sqlalchemy import Column, Integer, String, ForeignKey, update
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy import Column, Integer, String, Float, update, DateTime, func, ForeignKey
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
+
+
 
 Base = declarative_base()
 
 session = Session()
+
+class Employee(Base):
+	__tablename__ = 'employees'
+
+	#Declarative provides a built in __init__() method 
+	id = Column(Integer, primary_key=True)
+	name = Column(String(20), nullable=False)
+	age = Column(Integer)
+	role = Column(String(20))
+	salary = Column(Integer)
+	cRate = Column(Integer)
+
+	#returns a String representation of the object for printing
+	def __repr__(self):
+		return "<Employee(name='%s', age='%s', role='%s', salary='%s', cRate='%s')>" % \
+					(self.name, self.age, self.role, self.salary, self.cRate)
+
+	#creates a new employee
+	def newEmployee(self):
+		try:
+			session.add(self)
+			session.commit()
+
+		except e:
+			session.rollback()
+			print e
+
+	def bulkDelEmployee(self):
+		try:
+			for emp in session.query(Employee).order_by(Employee.id):
+				session.delete(emp)
+				session.commit()
+
+		except NoResultsFound, e:
+			print e
+
+#pass in a string, employee name
+def delEmployee(empName):
+	try:
+		emp = session.query(Employee).filter(Employee.name==empName).first()
+		session.delete(emp)
+		session.commit()
+
+	except NoResultFound, e:
+		print e
+
+#pass in a string, employee name
+def getEmployee(empName):
+	try:
+		emp = session.query(Employee).filter(Employee.name==empName).first()
+		print emp.name, emp.age, emp.role, emp.salary, emp.cRate
+
+	except NoResultFound, e:
+		print e
+
+
+#lists all employees
+def getAllEmployees():
+		try:
+			for emp in session.query(Employee).order_by(Employee.id):
+				print emp.name, emp.age, emp.role, emp.salary, emp.cRate
+
+		except NoResultFound, e:
+			print e
+
+def updateEmployee(emp_id, name, age, role, salary, cRate):
+	try:
+		session.query(Employee).filter(Employee.id == emp_id).\
+			update({"name": name,
+					"age": age,
+					"role": role,
+					"salary": salary,
+					"cRate": cRate
+					}, synchronize_session='evaluate')
+		session.commit()
+	except NoResultFound, e:
+		print e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Vehicle(Base):
 
@@ -97,6 +195,10 @@ def updateCar(carName, vin, make, model, year, cust_id):
 
 
 
+
+
+
+
 class Customer(Base):
 	
 	__tablename__ = 'customers'
@@ -152,20 +254,87 @@ def updateCustomer(cust_id, name, email):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+class WorkOrder(Base):
+
+	__tablename__ = 'workorders'
+
+	id = Column(Integer, primary_key = True)
+	date = Column(String(10))
+	service = Column(String(25))
+	addon = Column(Integer)
+
+	vehicle = Column(Integer, ForeignKey('vehicles.vin'))
+	cust = Column(Integer, ForeignKey('customers.id'))
+	technician = Column(Integer, ForeignKey('employees.id'))
+	
+
+
+
+	def __repr__(self):
+		return "<WorkOrder(date='%s', service='%s', addon='%s', vehicle='%s', cust='%s',technician='%s')>" %\
+					(self.date, self.service, self.addon, self.vehicle, self.cust, self.technician)
+
+
+	def newWorkOrder(self):
+		try:
+			print "calling newWorkOrder"
+			session.add(self)
+			session.commit()
+
+		except NoResultFound, e:
+			session.rollback()
+			print e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Base.metadata.create_all(engine)
 
-print "dbVehicle script is executed"
+#newCust= Customer(name="John", email='Boberson')
+#newCust.newCustomer()
 
-#updateCar("11111", "11111", "Kawasaki", "Ninja ZX-6R", "2015", "1")
+#newcar = Vehicle(vin='12345', make='Nissan', model='Altima', year='2006', cust_id='5')
+#newcar.newCar()
 
-#updateCustomer("3", "Big Daddy", "apb@ghotmail.com")
+WO = WorkOrder(date='2015-05-17',service='Radiance', addon= '100', vehicle='12345', cust='5', technician='50')
+WO.newWorkOrder()
 
-#new_cust= Customer(name='Big Berggy', email='FUCK@gmail.com')
-#session.add(new_cust)
-#session.commit()
+#new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')
 
+#new_emp.newEmployee()
+#getEmployee('Michael')
 
-#new_car = Vehicle(vin='222222', make='Suzuki', model='GSXR 1000', year='2008', cust_id='1')
-#new_car.newCar()
+#kill=Employee()
+
+#kill = session.query(Employee).filter(Employee.name=='Andrew').all()
+#print kill
+
+#getAllEmployees()
+
+#delEmployee('Michael')
+
 
 

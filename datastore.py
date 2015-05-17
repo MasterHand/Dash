@@ -219,7 +219,7 @@ class Customer(Base):
 			session.add(self)
 			session.commit()
 
-		except NoresultFound, e:
+		except NoResultFound, e:
 			session.rollback()
 			print e
 
@@ -297,11 +297,36 @@ class WorkOrder(Base):
 			session.rollback()
 			print e
 
+def delWorkOrder(wo_id):
+	try:
+		wo = session.query(WorkOrder).filter(WorkOrder.id == wo_id).first()
+		session.delete(wo)
+		session.commit()
+	except NoResultFound, e:
+		print e
+
+def getWorkOrder(wo_id):
+	try:
+		wo = session.query(WorkOrder).filter(WorkOrder.id ==wo_id).first()
+		print wo
+		print wo.date, wo.service, wo.addon, wo.vehicle, wo.cust, wo.technician
+	except NoResultFound, e:
+		print e
 
 
-
-
-
+def updateWorkOrder(wo_id, date, service, addon, vehicle, cust, technician):
+		try:
+		session.query(WorkOrder).filter(WorkOrder.id==wo_id).\
+			update({"date":date,
+					"service": service,
+					"addon": addon,
+					"vehicle": vehicle,
+					"cust": cust, 
+					"technician": technician
+				}, synchronize_session='evaluate')
+		session.commit()
+	except NoResultFound, e:
+		print e
 
 
 
@@ -319,8 +344,10 @@ Base.metadata.create_all(engine)
 #newcar = Vehicle(vin='12345', make='Nissan', model='Altima', year='2006', cust_id='5')
 #newcar.newCar()
 
-WO = WorkOrder(date='2015-05-17',service='Radiance', addon= '100', vehicle='12345', cust='5', technician='50')
-WO.newWorkOrder()
+#WO = WorkOrder(date='2015-05-17',service='Radiance', addon= '100', vehicle='12345', cust='5', technician='50')
+#WO.newWorkOrder()
+
+getWorkOrder('1')
 
 #new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')
 

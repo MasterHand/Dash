@@ -107,7 +107,6 @@ def updateEmployee(emp_id, name, age, role, salary, cRate):
 
 
 
-
 class Vehicle(Base):
 
 	__tablename__ = 'vehicles'
@@ -308,22 +307,22 @@ def delWorkOrder(wo_id):
 def getWorkOrder(wo_id):
 	try:
 		wo = session.query(WorkOrder).filter(WorkOrder.id ==wo_id).first()
-		print wo
+		#print wo
 		print wo.date, wo.service, wo.addon, wo.vehicle, wo.cust, wo.technician
 	except NoResultFound, e:
 		print e
 
 
 def updateWorkOrder(wo_id, date, service, addon, vehicle, cust, technician):
-		try:
+	try:
 		session.query(WorkOrder).filter(WorkOrder.id==wo_id).\
 			update({"date":date,
-					"service": service,
-					"addon": addon,
-					"vehicle": vehicle,
-					"cust": cust, 
-					"technician": technician
-				}, synchronize_session='evaluate')
+				"service": service,
+				"addon": addon,
+				"vehicle": vehicle,
+				"cust": cust, 
+				"technician": technician
+			}, synchronize_session='evaluate')
 		session.commit()
 	except NoResultFound, e:
 		print e
@@ -347,7 +346,7 @@ Base.metadata.create_all(engine)
 #WO = WorkOrder(date='2015-05-17',service='Radiance', addon= '100', vehicle='12345', cust='5', technician='50')
 #WO.newWorkOrder()
 
-getWorkOrder('1')
+#getWorkOrder('1')
 
 #new_emp = Employee(name='Andrew Bergeron', age='24', role='Manager', salary='44000', cRate='0')
 

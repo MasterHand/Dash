@@ -1,2 +1,4 @@
 #ignore this shit
-*.py[cod]
+*.pc
+*.DS_Store
+*.DS_Store?

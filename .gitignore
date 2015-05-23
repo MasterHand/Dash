@@ -1,4 +1,5 @@
-#ignore this shit
-*.pc
+#ignore#
+########
+*.pyc
 *.DS_Store
 *.DS_Store?

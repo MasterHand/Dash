@@ -7,7 +7,7 @@ from datastore import Customer
 
 #extends the Frame class to inherit the mainloop function
 
-class myapp(Frame):
+class CustomerFrame(Frame):
 
 	def __init__(self, master = None, **options):
 
@@ -28,7 +28,7 @@ class myapp(Frame):
 		self.email = Entry(self, textvariable = self.em).grid(row=1, column=1)
 
 		Button(self, text="Save", \
-			command=self.saveCustData).grid(sticky = 'e')
+			command=self.saveCustData).grid(row=3, column=1, sticky = 'e')
 
 
 	
@@ -51,12 +51,6 @@ class myapp(Frame):
 
 
 
-
-
-
-
-
-
 	def new_window(self):
 		top = Toplevel(master=self)
 		b = Button(top, text = "Quit", \
@@ -66,5 +60,5 @@ class myapp(Frame):
 		showinfo("Popup Title", "Error! not really")
 
 if __name__ == "__main__":
-	myapp().mainloop()
+	CustomerFrame().mainloop()
 

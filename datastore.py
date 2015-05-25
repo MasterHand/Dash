@@ -337,8 +337,8 @@ def updateWorkOrder(wo_id, date, service, addon, vehicle, cust, technician):
 
 Base.metadata.create_all(engine)
 
-#newCust= Customer(name="John", email='Boberson')
-#newCust.newCustomer()
+
+
 
 #newcar = Vehicle(vin='12345', make='Nissan', model='Altima', year='2006', cust_id='5')
 #newcar.newCar()
